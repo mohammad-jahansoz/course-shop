@@ -13,17 +13,8 @@ export default async function isAuth(
     token,
     process.env.JWT_PRIVATE_KEY || "DEFAULT"
   );
-  if (dataInToken) {
-    const user = (
-      await pool.query(
-        "SELECT user_uid,email FROM users WHERE user_uid = $1 LIMIT 1",
-        [dataInToken]
-      )
-    ).rows[0];
-    req.user = user;
-    next();
-  } else {
-    if (!dataInToken)
-      return res.status(401).send("access denied. no token provide");
+  if (!dataInToken) {
+    return res.status(401).send("access denied . token is not valid");
   }
+  next();
 }

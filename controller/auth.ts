@@ -29,11 +29,12 @@ export async function signin(req: Request, res: Response, next: NextFunction) {
       user.user_uid,
       process.env.JWT_PRIVATE_KEY || "DEFAULT"
     );
-    console.log(token);
     res.setHeader("x-auth-token", token).redirect("/");
   } catch (err) {
     next(err);
   }
 }
 
-export function test(req: Request, res: Response, next: NextFunction) {}
+export function test(req: Request, res: Response, next: NextFunction) {
+  console.log("test");
+}
