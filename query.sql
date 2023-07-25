@@ -1,0 +1,7 @@
+CREATE DATABASE course_shop;
+CREATE TABLE users(
+user_uid UUID NOT NULL PRIMARY KEY,
+email VARCHAR(100) NOT NULL,
+password VARCHAR(150) NOT NULL,
+UNIQUE(user_uid),UNIQUE(email)
+);
