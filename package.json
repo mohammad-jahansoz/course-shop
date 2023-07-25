@@ -1,0 +1,11 @@
+{
+  "name": "course-shop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "nodemon server.ts"
+  },
+  "author": "",
+  "license": "ISC"
+}
