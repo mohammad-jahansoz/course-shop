@@ -11,6 +11,7 @@ import bodyParser from "body-parser";
 import path from "path";
 import authRoutes from "./routes/auth";
 import adminRoutes from "./routes/admin";
+import courseRoutes from "./routes/course";
 import jwt from "jsonwebtoken";
 import checkUser from "./middleware/check-user";
 
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(courseRoutes);
 app.use(authRoutes);
 app.use("/admin", adminRoutes);
 

@@ -18,3 +18,11 @@ CREATE TABLE courses(
   user_uid UUID REFERENCES users(user_uid)
 );
 
+CREATE TABLE comments(
+  comment_uid UUID NOT NULL PRIMARY KEY,
+  comment VARCHAR(1000) NOT NULL , 
+  reply VARCHAR(1000),
+  public_status BOOLEAN DEFAULT false,
+  course_uid UUID REFERENCES courses(course_uid) NOT NULL,
+  user_uid UUID REFERENCES users(user_uid) NOT NULL
+);
