@@ -20,3 +20,17 @@ export const setComment: RequestHandler = async function (req, res, next) {
     [uuidv4(), comment, course_uid, user_uid]
   );
 };
+
+export const getCourse: RequestHandler = async function (req, res, next) {
+  const { course_uid } = req.params as { course_uid: string };
+
+  const course = await pool.query(
+    "SELECT * FROM courses WHERE course_uid = $1 LIMIT 1",
+    [course_uid]
+  );
+  const comments = await pool.query(
+    "SELECT comments.comment_uid , comments.comment , comments.reply , users.user_uid , users.email FROM comments JOIN users ON comments.user_uid = users.user_uid WHERE course_uid = $1 ",
+    [course_uid]
+  );
+  res.status(200).json({ course: course.rows[0], comments: comments.rows });
+};
