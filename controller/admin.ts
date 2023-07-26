@@ -27,11 +27,21 @@ export const createCourse: RequestHandler = async function (req, res, next) {
   }
 };
 
+export const deleteCourse: RequestHandler = async function (req, res, next) {
+  const { course_uid } = req.params as { course_uid: string };
+  const user_uid = req.user_uid;
+  await pool.query(
+    "DELETE FROM courses WHERE user_uid = $1 AND course_uid = $2",
+    [user_uid, course_uid]
+  );
+  res.status(200).redirect("/admin/courses");
+};
+
 export const getCourses: RequestHandler = async function (req, res, next) {
   const user_uid = req.user_uid;
   const page = req.query.page || 1;
   const courses = await pool.query(
-    "SELECT * FROM courses WHERE user_uid = $1 OFFSET $2 - 1 LIMIT 1 ",
+    "SELECT * FROM courses WHERE user_uid = $1 OFFSET $2 - 1 LIMIT 10 ",
     [user_uid, page]
   );
   res.status(200).json(courses.rows);
