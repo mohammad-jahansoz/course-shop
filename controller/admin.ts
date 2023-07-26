@@ -46,3 +46,19 @@ export const getCourses: RequestHandler = async function (req, res, next) {
   );
   res.status(200).json(courses.rows);
 };
+
+export const editCourse: RequestHandler = async function (req, res, next) {
+  const { course_uid } = req.params as { course_uid: string };
+  const user_uid = req.user_uid;
+  const { title, description, price, off, publicStatus } = req.body as {
+    title: string;
+    description: string;
+    price: number;
+    off: number;
+    publicStatus: boolean;
+  };
+  await pool.query(
+    "UPDATE courses SET title = $1,description = $2,price = $3,off = $4,public_status = $5  WHERE course_uid = $6 AND user_uid = $7 ",
+    [title, description, price, off, publicStatus, course_uid, user_uid]
+  );
+};
