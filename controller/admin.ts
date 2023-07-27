@@ -62,3 +62,19 @@ export const editCourse: RequestHandler = async function (req, res, next) {
     [title, description, price, off, publicStatus, course_uid, user_uid]
   );
 };
+
+export const updateComment: RequestHandler = async function (req, res, next) {
+  const { comment_uid } = req.params as { comment_uid: string };
+
+  const { reply, public_status } = req.body as {
+    reply: string;
+    public_status: boolean;
+  };
+
+  console.log("test");
+
+  await pool.query(
+    "UPDATE comments SET reply = $1 , public_status = $2  WHERE comment_uid = $3",
+    [reply, public_status, comment_uid]
+  );
+};

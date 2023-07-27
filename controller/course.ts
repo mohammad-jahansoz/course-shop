@@ -29,7 +29,7 @@ export const getCourse: RequestHandler = async function (req, res, next) {
     [course_uid]
   );
   const comments = await pool.query(
-    "SELECT comments.comment_uid , comments.comment , comments.reply , users.user_uid , users.email FROM comments JOIN users ON comments.user_uid = users.user_uid WHERE course_uid = $1 ",
+    "SELECT comments.comment_uid , comments.comment , comments.reply , users.user_uid , users.email FROM comments JOIN users ON comments.user_uid = users.user_uid AND comments.public_status = true WHERE course_uid = $1 ",
     [course_uid]
   );
   res.status(200).json({ course: course.rows[0], comments: comments.rows });

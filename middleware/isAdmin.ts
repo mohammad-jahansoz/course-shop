@@ -28,5 +28,7 @@ export default async function isAuth(
     }
     req.user_uid = user_uid.toString();
     next();
+  } else {
+    return res.status(401).send("access denied. no token provide");
   }
 }
