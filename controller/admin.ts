@@ -65,16 +65,38 @@ export const editCourse: RequestHandler = async function (req, res, next) {
 
 export const updateComment: RequestHandler = async function (req, res, next) {
   const { comment_uid } = req.params as { comment_uid: string };
-
   const { reply, public_status } = req.body as {
     reply: string;
     public_status: boolean;
   };
-
-  console.log("test");
-
   await pool.query(
     "UPDATE comments SET reply = $1 , public_status = $2  WHERE comment_uid = $3",
     [reply, public_status, comment_uid]
   );
+};
+
+export const createSeason: RequestHandler = async function (req, res, next) {
+  try {
+    const { course_uid, title } = req.body as {
+      course_uid: string;
+      title: string;
+    };
+    const user_uid = req.user_uid;
+    const result = await pool.query(
+      "INSERT INTO seasons (season_uid,title,course_uid,user_uid) VALUES ($1,$2,$3,$4)",
+      [uuidv4(), title, course_uid, user_uid]
+    );
+    res.send(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const createEpisode: RequestHandler = async function (req, res, next) {
+  const { title, time, course_uid, season_uid } = req.body as {
+    title: string;
+    time: string;
+    course_uid: string;
+    season_uid: string;
+  };
 };
