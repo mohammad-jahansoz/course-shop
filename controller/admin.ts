@@ -115,4 +115,29 @@ export const createEpisode: RequestHandler = async function (req, res, next) {
       user_uid,
     ]
   );
+  const episodes = await pool.query(
+    "SELECT time FROM episodes WHERE course_uid = $1",
+    [course_uid]
+  );
+  let second = 0;
+  episodes.rows.forEach((e) => {
+    let time = e.time.split(":");
+    if (time.length === 2) {
+      second += parseInt(time[0]) * 60;
+      second += parseInt(time[1]);
+    } else if (time.length === 3) {
+      second += parseInt(time[0]) * 3600;
+      second += parseInt(time[1]) * 60;
+      second += parseInt(time[2]);
+    }
+  });
+
+  const hour = Math.floor(second / 3600);
+  const minute = Math.floor(second / 60) % 60;
+  second = Math.floor(second % 60);
+  const newTime = `${hour}:${minute}:${second}`;
+  await pool.query("UPDATE courses SET time = $1 WHERE course_uid = $2 ", [
+    newTime,
+    course_uid,
+  ]);
 };

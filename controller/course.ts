@@ -28,12 +28,7 @@ export const getCourse: RequestHandler = async function (req, res, next) {
     "SELECT * FROM courses WHERE course_uid = $1 LIMIT 1",
     [course_uid]
   );
-  // "SELECT * FROM seasons JOIN episodes ON seasons.course_uid = episodes.course_uid WHERE seasons.course_uid = $1 ",
 
-  // const seasonsAndEpisodes = await pool.query(
-  //   "SELECT seasons.*,episodes.* FROM seasons LEFT JOIN episodes ON seasons.season_uid = episodes.season_uid WHERE seasons.course_uid = $1",
-  //   [course_uid]
-  // );
   const seasonsAndEpisodes = await pool.query(
     "SELECT episodes.*,seasons.title AS season_name FROM episodes FULL JOIN seasons ON seasons.season_uid = episodes.season_uid WHERE seasons.course_uid = $1 ",
     [course_uid]
